@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RecipesShare.Contracts\RecipesShare.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

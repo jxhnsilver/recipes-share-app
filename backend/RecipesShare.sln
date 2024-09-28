@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipesShare.DAL", "RecipesShare.DAL\RecipesShare.DAL.csproj", "{E7BE5950-DE71-4799-8681-0116625DBCBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesShare.DAL", "RecipesShare.DAL\RecipesShare.DAL.csproj", "{E7BE5950-DE71-4799-8681-0116625DBCBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipesShare.BLL", "RecipesShare.BLL\RecipesShare.BLL.csproj", "{DE9FC7D4-40A4-4A91-AC57-08E6A998220A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesShare.BLL", "RecipesShare.BLL\RecipesShare.BLL.csproj", "{DE9FC7D4-40A4-4A91-AC57-08E6A998220A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipesShare.API", "RecipesShare.API\RecipesShare.API.csproj", "{2DF3F40B-EE4D-40B8-8F55-843CCA7D48E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesShare.API", "RecipesShare.API\RecipesShare.API.csproj", "{2DF3F40B-EE4D-40B8-8F55-843CCA7D48E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipesShare.Contracts", "RecipesShare.Contracts\RecipesShare.Contracts.csproj", "{9B205054-0575-468A-AE7E-833D1F9167CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{2DF3F40B-EE4D-40B8-8F55-843CCA7D48E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DF3F40B-EE4D-40B8-8F55-843CCA7D48E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DF3F40B-EE4D-40B8-8F55-843CCA7D48E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B205054-0575-468A-AE7E-833D1F9167CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B205054-0575-468A-AE7E-833D1F9167CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B205054-0575-468A-AE7E-833D1F9167CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B205054-0575-468A-AE7E-833D1F9167CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
