@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using RecipesShare.DAL.Context;
 
 namespace RecipesShare.API
 {
@@ -8,6 +11,9 @@ namespace RecipesShare.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddDbContext<RecipesShareDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("RecipesShareSqlServerConnection")));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
