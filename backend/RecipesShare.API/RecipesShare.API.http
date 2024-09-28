@@ -1,0 +1,5 @@
+@RecipesShare.API_HostAddress = http://localhost:5196
+
+Accept: application/json
+
+###
