@@ -1,4 +1,4 @@
-﻿namespace RecipesShare.Contracts.DTOs
+﻿namespace RecipesShare.Contracts.DTOs.Recipe
 {
     public class UpdateRecipeDTO
     {

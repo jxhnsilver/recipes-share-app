@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RecipesShare.BLL.Abstractions;
-using RecipesShare.Contracts.DTOs;
+using RecipesShare.BLL.Abstractions.Services;
+using RecipesShare.Contracts.DTOs.Recipe;
 
 namespace RecipesShare.API.Controllers
 {
@@ -15,13 +15,13 @@ namespace RecipesShare.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             var result = await _recipeService.GetAllRecipesAsync();
             return Ok(result);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             var result = await _recipeService.GetRecipeByIdAsync(id);
             return Ok(result);
@@ -34,7 +34,7 @@ namespace RecipesShare.API.Controllers
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, UpdateRecipeDTO updateRecipeDTO)
-        {
+        {            
             var result = await _recipeService.UpdateRecipeAsync(id, updateRecipeDTO);
             return Ok(result);
         }
