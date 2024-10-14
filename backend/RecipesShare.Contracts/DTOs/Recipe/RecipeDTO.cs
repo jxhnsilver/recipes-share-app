@@ -1,4 +1,6 @@
-﻿namespace RecipesShare.Contracts.DTOs.Recipe
+﻿using RecipesShare.Contracts.DTOs.Category;
+
+namespace RecipesShare.Contracts.DTOs.Recipe
 {
     public class RecipeDTO
     {
@@ -9,5 +11,6 @@
         public string Instructions { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public CategoryDTO Category { get; set; }
     }
 }
