@@ -4,7 +4,7 @@ using RecipesShare.Contracts.DTOs.Recipe;
 
 namespace RecipesShare.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/recipes")]
     [ApiController]
     public class RecipesController : ControllerBase
     {
@@ -23,8 +23,16 @@ namespace RecipesShare.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await _recipeService.GetRecipeByIdAsync(id);
-            return Ok(result);
+            try
+            {
+                var result = await _recipeService.GetRecipeByIdAsync(id);
+                
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }   
         }
         [HttpPost]
         public async Task<IActionResult> Post(CreateRecipeDTO createRecipeDTO)

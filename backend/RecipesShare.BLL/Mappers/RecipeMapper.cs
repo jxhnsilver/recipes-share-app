@@ -1,4 +1,5 @@
 ﻿using RecipesShare.BLL.Abstractions.Mappers;
+using RecipesShare.Contracts.DTOs.Category;
 using RecipesShare.Contracts.DTOs.Recipe;
 using RecipesShare.DAL.Entities;
 
@@ -16,7 +17,13 @@ namespace RecipesShare.BLL.Mappers
                 Ingredients = recipe.Ingredients,
                 Instructions = recipe.Instructions,
                 CreatedAt = recipe.CreatedAt,
-                UpdatedAt = recipe.UpdatedAt
+                UpdatedAt = recipe.UpdatedAt,
+                Category = new CategoryDTO
+                {
+                    Id = recipe.Category.Id,
+                    Name = recipe.Category.Name,
+                    Description = recipe.Category.Description,
+                },
             };
         }
 
@@ -28,6 +35,7 @@ namespace RecipesShare.BLL.Mappers
                 Description = createRecipeDTO.Description,
                 Ingredients = createRecipeDTO.Ingredients,
                 Instructions = createRecipeDTO.Instructions,
+                CategoryId = createRecipeDTO.CategoryId,
             };
         }
 
@@ -37,6 +45,8 @@ namespace RecipesShare.BLL.Mappers
             existingRecipe.Description = updateRecipeDTO.Description;
             existingRecipe.Ingredients = updateRecipeDTO.Ingredients;
             existingRecipe.Instructions = updateRecipeDTO.Instructions;
+            existingRecipe.Category.Name = updateRecipeDTO.Category.Name;
+            existingRecipe.Category.Description = updateRecipeDTO.Category.Description;
         }
     }
 }

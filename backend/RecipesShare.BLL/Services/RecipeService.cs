@@ -33,13 +33,13 @@ namespace RecipesShare.BLL.Services
 
         public async Task<Result> DeleteRecipeAsync(int id)
         {
-            var entity = await _recipeRepository.GetRecipeByIdAsync(id);
-            if (entity == null)
+            var recipe = await _recipeRepository.GetRecipeByIdAsync(id);
+            if (recipe == null)
             {
                 return new Result { IsSuccess = false, Message = "Recipe not found." };
             }
 
-            var affectedRows = await _recipeRepository.DeleteRecipeAsync(entity);
+            var affectedRows = await _recipeRepository.DeleteRecipeAsync(recipe);
             if (affectedRows == 0)
             {
                 return new Result { IsSuccess = false, Message = "Failed to delete the recipe." };
