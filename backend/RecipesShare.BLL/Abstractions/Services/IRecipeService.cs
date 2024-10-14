@@ -1,7 +1,7 @@
 ﻿using RecipesShare.Contracts.Common;
-using RecipesShare.Contracts.DTOs;
+using RecipesShare.Contracts.DTOs.Recipe;
 
-namespace RecipesShare.BLL.Abstractions
+namespace RecipesShare.BLL.Abstractions.Services
 {
     public interface IRecipeService
     {

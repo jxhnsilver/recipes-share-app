@@ -29,12 +29,16 @@ namespace RecipesShare.DAL.Repositories
 
         public async Task<List<Recipe>> GetAllRecipesAsync()
         {
-            return await _context.Recipes.ToListAsync();
+            return await _context.Recipes
+                .Include(r => r.Category)
+                .ToListAsync();
         }
 
         public async Task<Recipe?> GetRecipeByIdAsync(int id)
         {
-            return await _context.Recipes.FindAsync(id);
+            return await _context.Recipes
+                .Include(r => r.Category)
+                .FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<int> UpdateRecipeAsync(Recipe recipe)

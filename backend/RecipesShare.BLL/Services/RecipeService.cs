@@ -1,30 +1,26 @@
-﻿using RecipesShare.BLL.Abstractions;
+﻿using RecipesShare.BLL.Abstractions.Mappers;
+using RecipesShare.BLL.Abstractions.Services;
 using RecipesShare.Contracts.Common;
-using RecipesShare.Contracts.DTOs;
+using RecipesShare.Contracts.DTOs.Recipe;
 using RecipesShare.DAL.Abstractions;
-using RecipesShare.DAL.Entities;
 
 namespace RecipesShare.BLL.Services
 {
     public class RecipeService : IRecipeService
     {
         private readonly IRecipeRepository _recipeRepository;
-        public RecipeService(IRecipeRepository recipeRepository)
+        private readonly IRecipeMapper _recipeMapper;
+        public RecipeService(IRecipeRepository recipeRepository, IRecipeMapper recipeMapper)
         {
             _recipeRepository = recipeRepository;
+            _recipeMapper = recipeMapper;
         }
 
         public async Task<Result> AddRecipeAsync(CreateRecipeDTO createRecipeDTO)
         {
-            var recipe = new Recipe
-            {
-                Title = createRecipeDTO.Title,
-                Description = createRecipeDTO.Description,
-                Ingredients = createRecipeDTO.Ingredients,
-                Instructions = createRecipeDTO.Instructions,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-            };
+            var recipe = _recipeMapper.MapToEntity(createRecipeDTO);
+            recipe.CreatedAt = DateTime.UtcNow;
+            recipe.UpdatedAt = DateTime.UtcNow;
 
             var affectedRows = await _recipeRepository.AddRecipeAsync(recipe);
             if (affectedRows == 0)
@@ -37,16 +33,16 @@ namespace RecipesShare.BLL.Services
 
         public async Task<Result> DeleteRecipeAsync(int id)
         {
-            var entity = await _recipeRepository.GetRecipeByIdAsync(id);
-            if (entity == null)
+            var recipe = await _recipeRepository.GetRecipeByIdAsync(id);
+            if (recipe == null)
             {
                 return new Result { IsSuccess = false, Message = "Recipe not found." };
             }
 
-            var affectedRows = await _recipeRepository.DeleteRecipeAsync(entity);
+            var affectedRows = await _recipeRepository.DeleteRecipeAsync(recipe);
             if (affectedRows == 0)
             {
-                return new Result { IsSuccess = false, Message = "Recipe can't be deleted." };
+                return new Result { IsSuccess = false, Message = "Failed to delete the recipe." };
             }
 
             return new Result { IsSuccess = true, Message = "Recipe deleted successfully." };
@@ -56,18 +52,7 @@ namespace RecipesShare.BLL.Services
         {
             var recipeList = await _recipeRepository.GetAllRecipesAsync();
 
-            var recipeDTOList = recipeList.Select(recipe => new RecipeDTO
-            {
-                Id = recipe.Id,
-                Title = recipe.Title,
-                Description = recipe.Description,
-                Ingredients = recipe.Ingredients,
-                Instructions = recipe.Instructions,
-                CreatedAt = recipe.CreatedAt,
-                UpdatedAt = recipe.UpdatedAt
-            }).ToList();
-
-            return recipeDTOList;
+            return recipeList.Select(recipe => _recipeMapper.MapToDto(recipe)).ToList();
         }
 
         public async Task<RecipeDTO?> GetRecipeByIdAsync(int id)
@@ -76,39 +61,25 @@ namespace RecipesShare.BLL.Services
 
             if (recipe == null)
             {
-                throw new ArgumentNullException(nameof(recipe));
+                throw new ArgumentNullException("Recipe not found.");
             }
 
-            var recipeDTO = new RecipeDTO
-            {
-                Id = recipe.Id,
-                Title = recipe.Title,
-                Description = recipe.Description,
-                Ingredients = recipe.Ingredients,
-                Instructions = recipe.Instructions,
-                CreatedAt = recipe.CreatedAt,
-                UpdatedAt = recipe.UpdatedAt
-            };
-
-            return recipeDTO;
+            return _recipeMapper.MapToDto(recipe);
         }
 
         public async Task<Result> UpdateRecipeAsync(int id, UpdateRecipeDTO updateRecipeDTO)
         {
-            var entity = await _recipeRepository.GetRecipeByIdAsync(id);
+            var recipe = await _recipeRepository.GetRecipeByIdAsync(id);
 
-            if (entity == null)
+            if (recipe == null)
             {
-                return new Result { IsSuccess = false, Message = "Recipe not found." };
+                return new Result { IsSuccess = false, Message = "Failed to update the recipe." };
             }
 
-            entity.Title = updateRecipeDTO.Title;
-            entity.Description = updateRecipeDTO.Description;
-            entity.Ingredients = updateRecipeDTO.Ingredients;
-            entity.Instructions = updateRecipeDTO.Instructions;
-            entity.UpdatedAt = DateTime.UtcNow;
+            _recipeMapper.MapToExistEntity(updateRecipeDTO, recipe);
+            recipe.UpdatedAt = DateTime.UtcNow;
 
-            var affectedRows = await _recipeRepository.UpdateRecipeAsync(entity);
+            var affectedRows = await _recipeRepository.UpdateRecipeAsync(recipe);
             if (affectedRows == 0)
             {
                 return new Result { IsSuccess = false, Message = "Recipe can't be updated." };

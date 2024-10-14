@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using RecipesShare.BLL.Abstractions;
+using RecipesShare.BLL.Abstractions.Mappers;
+using RecipesShare.BLL.Abstractions.Services;
+using RecipesShare.BLL.Mappers;
 using RecipesShare.BLL.Services;
 using RecipesShare.DAL.Abstractions;
 using RecipesShare.DAL.Context;
@@ -20,6 +22,11 @@ namespace RecipesShare.API
 
             builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
             builder.Services.AddScoped<IRecipeService, RecipeService>();
+            builder.Services.AddScoped<IRecipeMapper, RecipeMapper>();
+
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<ICategoryMapper, CategoryMapper>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
