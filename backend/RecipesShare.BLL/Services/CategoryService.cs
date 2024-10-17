@@ -3,6 +3,7 @@ using RecipesShare.BLL.Abstractions.Services;
 using RecipesShare.Contracts.Common;
 using RecipesShare.Contracts.DTOs.Category;
 using RecipesShare.DAL.Abstractions;
+using RecipesShare.DAL.Entities;
 
 namespace RecipesShare.BLL.Services
 {
@@ -59,7 +60,7 @@ namespace RecipesShare.BLL.Services
 
             if (category == null)
             {
-                throw new ArgumentNullException("Category not found.");
+                throw new ArgumentNullException(nameof(Category), "Category not found.");
             }
 
             return _categoryMapper.MapToDto(category);

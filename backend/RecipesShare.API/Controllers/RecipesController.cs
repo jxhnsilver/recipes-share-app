@@ -31,7 +31,7 @@ namespace RecipesShare.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Error message: " + ex.Message);
             }   
         }
         [HttpPost]

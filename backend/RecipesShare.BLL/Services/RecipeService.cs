@@ -3,6 +3,7 @@ using RecipesShare.BLL.Abstractions.Services;
 using RecipesShare.Contracts.Common;
 using RecipesShare.Contracts.DTOs.Recipe;
 using RecipesShare.DAL.Abstractions;
+using RecipesShare.DAL.Entities;
 
 namespace RecipesShare.BLL.Services
 {
@@ -55,13 +56,13 @@ namespace RecipesShare.BLL.Services
             return recipeList.Select(recipe => _recipeMapper.MapToDto(recipe)).ToList();
         }
 
-        public async Task<RecipeDTO?> GetRecipeByIdAsync(int id)
+        public async Task<RecipeDTO> GetRecipeByIdAsync(int id)
         {
             var recipe = await _recipeRepository.GetRecipeByIdAsync(id);
 
             if (recipe == null)
             {
-                throw new ArgumentNullException("Recipe not found.");
+                throw new ArgumentNullException(nameof(Recipe), "Recipe not found.");
             }
 
             return _recipeMapper.MapToDto(recipe);
