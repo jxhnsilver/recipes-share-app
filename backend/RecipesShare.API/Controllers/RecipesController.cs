@@ -23,33 +23,50 @@ namespace RecipesShare.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            try
-            {
-                var result = await _recipeService.GetRecipeByIdAsync(id);
+            var result = await _recipeService.GetRecipeByIdAsync(id);
                 
-                return Ok(result);
-            }
-            catch (Exception ex)
+            if (!result.IsSuccess)
             {
-                return BadRequest("Error message: " + ex.Message);
-            }   
+                return BadRequest(result);
+            }
+
+            return Ok(result);
         }
+
         [HttpPost]
         public async Task<IActionResult> Post(CreateRecipeDTO createRecipeDTO)
         {
             var result = await _recipeService.AddRecipeAsync(createRecipeDTO);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, UpdateRecipeDTO updateRecipeDTO)
         {            
             var result = await _recipeService.UpdateRecipeAsync(id, updateRecipeDTO);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _recipeService.DeleteRecipeAsync(id);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
     }
