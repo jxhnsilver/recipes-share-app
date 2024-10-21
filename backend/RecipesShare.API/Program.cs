@@ -1,11 +1,16 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RecipesShare.BLL.Abstractions.Mappers;
+using RecipesShare.BLL.Abstractions.Security;
 using RecipesShare.BLL.Abstractions.Services;
 using RecipesShare.BLL.Mappers;
+using RecipesShare.BLL.Security;
 using RecipesShare.BLL.Services;
 using RecipesShare.DAL.Abstractions;
 using RecipesShare.DAL.Context;
 using RecipesShare.DAL.Repositories;
+using System.Text;
 
 namespace RecipesShare.API
 {
@@ -28,6 +33,37 @@ namespace RecipesShare.API
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<ICategoryMapper, CategoryMapper>();
 
+            builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["JwtOptions:Issuer"],
+                    ValidAudience = builder.Configuration["JwtOptions:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtOptions:SigningKey"]!))
+                };
+            });
+
+            builder.Services.AddAuthorization();
+
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+            builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+            builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -44,6 +80,8 @@ namespace RecipesShare.API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllers();
 
