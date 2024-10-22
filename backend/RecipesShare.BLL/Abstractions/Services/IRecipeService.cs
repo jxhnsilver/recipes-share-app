@@ -6,9 +6,9 @@ namespace RecipesShare.BLL.Abstractions.Services
     public interface IRecipeService
     {
         Task<List<RecipeDTO>> GetAllRecipesAsync();
-        Task<RecipeDTO?> GetRecipeByIdAsync(int id);
-        Task<Result> AddRecipeAsync(CreateRecipeDTO createRecipeDTO);
-        Task<Result> UpdateRecipeAsync(int id, UpdateRecipeDTO updateRecipeDTO);
-        Task<Result> DeleteRecipeAsync(int id);
+        Task<Result<RecipeDTO>> GetRecipeByIdAsync(int id);
+        Task<Result> AddRecipeAsync(CreateRecipeDTO createRecipeDTO, int userId);
+        Task<Result> UpdateRecipeAsync(int id, UpdateRecipeDTO updateRecipeDTO, int userId);
+        Task<Result> DeleteRecipeAsync(int id, int userId);
     }
 }

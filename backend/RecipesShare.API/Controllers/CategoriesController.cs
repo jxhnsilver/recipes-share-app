@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RecipesShare.BLL.Abstractions.Services;
+using RecipesShare.Contracts.Common;
 using RecipesShare.Contracts.DTOs.Category;
 
 namespace RecipesShare.API.Controllers
@@ -31,21 +33,24 @@ namespace RecipesShare.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Error message: " + ex.Message);
             }
         }
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
         [HttpPost]
         public async Task<IActionResult> Post(CreateCategoryDTO createCategoryDTO)
         {
             var result = await _categoryService.AddCategoryAsync(createCategoryDTO);
             return Ok(result);
         }
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, UpdateCategoryDTO updateCategoryDTO)
         {
             var result = await _categoryService.UpdateCategoryAsync(id, updateCategoryDTO);
             return Ok(result);
         }
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
