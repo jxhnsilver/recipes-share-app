@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RecipesShare.BLL\RecipesShare.BLL.csproj" />
+    <ProjectReference Include="..\RecipesShare.Contracts\RecipesShare.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

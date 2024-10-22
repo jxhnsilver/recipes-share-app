@@ -18,6 +18,7 @@ namespace RecipesShare.BLL.Mappers
                 Instructions = recipe.Instructions,
                 CreatedAt = recipe.CreatedAt,
                 UpdatedAt = recipe.UpdatedAt,
+                UserId = recipe.UserId,
                 Category = new CategoryDTO
                 {
                     Id = recipe.Category.Id,

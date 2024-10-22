@@ -11,6 +11,7 @@ namespace RecipesShare.Contracts.DTOs.Recipe
         public string Instructions { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public int UserId { get; set; }
         public CategoryDTO Category { get; set; }
     }
 }

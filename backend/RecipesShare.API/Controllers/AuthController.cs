@@ -45,6 +45,8 @@ namespace RecipesShare.API.Controllers
                 return BadRequest(result);
             }
 
+            HttpContext.Response.Cookies.Append("my-cookies", result.Value);
+
             return Ok(result);
         }
     }

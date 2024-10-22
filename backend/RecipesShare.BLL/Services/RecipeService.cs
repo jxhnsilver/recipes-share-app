@@ -16,9 +16,10 @@ namespace RecipesShare.BLL.Services
             _recipeMapper = recipeMapper;
         }
 
-        public async Task<Result> AddRecipeAsync(CreateRecipeDTO createRecipeDTO)
+        public async Task<Result> AddRecipeAsync(CreateRecipeDTO createRecipeDTO, int userId)
         {
             var recipe = _recipeMapper.MapToEntity(createRecipeDTO);
+            recipe.UserId = userId;
             recipe.CreatedAt = DateTime.UtcNow;
             recipe.UpdatedAt = DateTime.UtcNow;
 
@@ -31,12 +32,17 @@ namespace RecipesShare.BLL.Services
             return new Result { IsSuccess = true, Message = "Recipe added successfully." };
         }
 
-        public async Task<Result> DeleteRecipeAsync(int id)
+        public async Task<Result> DeleteRecipeAsync(int id, int userId)
         {
             var recipe = await _recipeRepository.GetRecipeByIdAsync(id);
             if (recipe == null)
             {
                 return new Result { IsSuccess = false, Message = "Recipe not found." };
+            }
+
+            if (recipe.UserId != userId)
+            {
+                return new Result { IsSuccess = false, Message = "Failed to delete the recipe" };
             }
 
             var affectedRows = await _recipeRepository.DeleteRecipeAsync(recipe);
@@ -69,11 +75,16 @@ namespace RecipesShare.BLL.Services
             return new Result<RecipeDTO> { IsSuccess = true, Value = recipeDTO };
         }
 
-        public async Task<Result> UpdateRecipeAsync(int id, UpdateRecipeDTO updateRecipeDTO)
+        public async Task<Result> UpdateRecipeAsync(int id, UpdateRecipeDTO updateRecipeDTO, int userId)
         {
             var recipe = await _recipeRepository.GetRecipeByIdAsync(id);
 
             if (recipe == null)
+            {
+                return new Result { IsSuccess = false, Message = "Failed to update the recipe. Recipe not found." };
+            }
+
+            if (recipe.UserId != userId)
             {
                 return new Result { IsSuccess = false, Message = "Failed to update the recipe." };
             }

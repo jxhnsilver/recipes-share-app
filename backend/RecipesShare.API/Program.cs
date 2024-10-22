@@ -52,6 +52,14 @@ namespace RecipesShare.API
                     ValidAudience = builder.Configuration["JwtOptions:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtOptions:SigningKey"]!))
                 };
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = contex =>
+                    {
+                        contex.Token = contex.Request.Cookies["my-cookies"];
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             builder.Services.AddAuthorization();
